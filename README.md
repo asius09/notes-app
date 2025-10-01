@@ -1,50 +1,36 @@
-# Welcome to your Expo app 👋
+# Notes App with Folders & Search
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This app allows users to create notes, organize them into folders, and search/filter notes. It also supports voice-to-text note creation using the Expo Speech API.
 
-## Get started
+---
 
-1. Install dependencies
+## App Flow
 
-   ```bash
-   npm install
-   ```
+1. **Home Screen**
+   - Displays a list of folders.
+   - Option to create a new folder.
+   - Tap a folder to view its notes.
 
-2. Start the app
+2. **Folder Screen**
+   - Shows notes within the selected folder.
+   - Option to create a new note.
+   - Search bar to filter notes by title/content.
+   - Tap a note to view/edit.
 
-   ```bash
-   npx expo start
-   ```
+3. **Note Screen**
+   - View or edit note content.
+   - Option to use voice-to-text to add content.
+   - Save or delete note.
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Navigation Structure
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- **Root Stack Navigator**
+  - `HomeScreen` (Folders List)
+    - **Folder Stack Navigator** (nested)
+      - `FolderScreen` (Notes in Folder)
+        - `NoteScreen` (View/Edit Note)
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Example (React Navigation v6+):
+# notes-app
