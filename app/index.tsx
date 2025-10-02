@@ -1,12 +1,14 @@
 import React from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AppHeader } from "../components/AppHeader";
-import { Input } from "../components/ui/Input";
-import { NoteType } from "../types/noteType";
-import { NoNotes, NotesContainer } from "../components/NotesContainer";
+import { AppHeader } from "../src/components/AppHeader";
+import { SearchInput } from "../src/components/SearchInput";
+import { NoteType } from "../src/types/noteType";
+import { NoNotes, NotesContainer } from "../src/components/NotesContainer";
+import { useTheme } from "@react-navigation/native";
 
 export default function HomeScreen() {
+  const { colors } = useTheme();
   const notes: NoteType[] = [
     {
       id: "1",
@@ -25,18 +27,14 @@ export default function HomeScreen() {
   ];
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <View
-        style={{
-          flex: 1,
-          width: "100%",
-          height: "auto",
-          display: "flex",
-          flexDirection: "column",
-        }}
+        style={{ flex: 1, width: "100%", backgroundColor: colors.background }}
       >
         <AppHeader />
-        <Input placeholder="Search notes.." />
+        <View style={{ paddingHorizontal: 16, marginBottom: 8 }}>
+          <SearchInput />
+        </View>
         {notes && notes.length > 0 ? (
           <NotesContainer notes={notes} />
         ) : (
