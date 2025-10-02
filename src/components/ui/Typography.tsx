@@ -7,11 +7,95 @@ type TypographyProps = TextProps & {
   style?: any;
 };
 
-export const H1: React.FC<TypographyProps> = ({ children, style, ...props }) => {
+type SizeType = "xs" | "sm" | "md" | "lg" | "xl";
+
+const fontSizeMap: Record<SizeType, number> = {
+  xs: 12,
+  sm: 14,
+  md: 16,
+  lg: 18,
+  xl: 20,
+};
+
+export const Typography: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  const { colors } = useTheme();
+  return (
+    <Text style={[{ color: colors.text }, style]} {...props}>
+      {children}
+    </Text>
+  );
+};
+
+export const H1: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  return (
+    <Typography style={[typographyStyles.h1, style]} {...props}>
+      {children}
+    </Typography>
+  );
+};
+
+export const H2: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  return (
+    <Typography style={[typographyStyles.h2, style]} {...props}>
+      {children}
+    </Typography>
+  );
+};
+
+export const H3: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  return (
+    <Typography style={[typographyStyles.h3, style]} {...props}>
+      {children}
+    </Typography>
+  );
+};
+
+export const H4: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
+  return (
+    <Typography style={[typographyStyles.h4, style]} {...props}>
+      {children}
+    </Typography>
+  );
+};
+
+type PProps = TypographyProps & {
+  size?: SizeType;
+};
+
+export const P: React.FC<PProps> = ({
+  children,
+  style,
+  size = "md",
+  ...props
+}) => {
   const { colors } = useTheme();
   return (
     <Text
-      style={[styles.h1, { color: colors.text }, style]}
+      style={[
+        typographyStyles.p,
+        { color: colors.text, fontSize: fontSizeMap[size] },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -19,11 +103,15 @@ export const H1: React.FC<TypographyProps> = ({ children, style, ...props }) => 
   );
 };
 
-export const H2: React.FC<TypographyProps> = ({ children, style, ...props }) => {
+export const Label: React.FC<TypographyProps> = ({
+  children,
+  style,
+  ...props
+}) => {
   const { colors } = useTheme();
   return (
     <Text
-      style={[styles.h2, { color: colors.text }, style]}
+      style={[typographyStyles.label, { color: colors.muted }, style]}
       {...props}
     >
       {children}
@@ -31,11 +119,24 @@ export const H2: React.FC<TypographyProps> = ({ children, style, ...props }) => 
   );
 };
 
-export const H3: React.FC<TypographyProps> = ({ children, style, ...props }) => {
+type MutedProps = TypographyProps & {
+  size?: SizeType;
+};
+
+export const Muted: React.FC<MutedProps> = ({
+  children,
+  style,
+  size = "md",
+  ...props
+}) => {
   const { colors } = useTheme();
   return (
     <Text
-      style={[styles.h3, { color: colors.text }, style]}
+      style={[
+        typographyStyles.muted,
+        { color: colors.muted, fontSize: fontSizeMap[size] },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -43,67 +144,7 @@ export const H3: React.FC<TypographyProps> = ({ children, style, ...props }) => 
   );
 };
 
-export const H4: React.FC<TypographyProps> = ({ children, style, ...props }) => {
-  const { colors } = useTheme();
-  return (
-    <Text
-      style={[styles.h4, { color: colors.text }, style]}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-};
-
-export const P: React.FC<TypographyProps> = ({ children, style, ...props }) => {
-  const { colors } = useTheme();
-  return (
-    <Text
-      style={[styles.p, { color: colors.text }, style]}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-};
-
-export const Label: React.FC<TypographyProps> = ({ children, style, ...props }) => {
-  const { colors } = useTheme();
-  return (
-    <Text
-      style={[styles.label, { color: colors.muted }, style]}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-};
-
-export const Small: React.FC<TypographyProps> = ({ children, style, ...props }) => {
-  const { colors } = useTheme();
-  return (
-    <Text
-      style={[styles.small, { color: colors.muted }, style]}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-};
-
-export const Muted: React.FC<TypographyProps> = ({ children, style, ...props }) => {
-  const { colors } = useTheme();
-  return (
-    <Text
-      style={[styles.muted, { color: colors.muted }, style]}
-      {...props}
-    >
-      {children}
-    </Text>
-  );
-};
-
-const styles = StyleSheet.create({
+const typographyStyles = StyleSheet.create({
   h1: {
     fontSize: 32,
     fontWeight: "700",
@@ -125,7 +166,6 @@ const styles = StyleSheet.create({
     marginBottom: 2,
   },
   p: {
-    fontSize: 16,
     fontWeight: "400",
     marginBottom: 2,
   },
@@ -135,12 +175,7 @@ const styles = StyleSheet.create({
     textTransform: "uppercase",
     letterSpacing: 1,
   },
-  small: {
-    fontSize: 12,
-    fontWeight: "400",
-  },
   muted: {
-    fontSize: 14,
     fontWeight: "400",
     opacity: 0.7,
   },
