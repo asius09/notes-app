@@ -8,11 +8,14 @@ import {
 } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 
+type ButtonVariant = "primary" | "secondary" | "outline" | "destructive";
+type ButtonSize = "small" | "medium" | "large";
+
 type ButtonProps = {
   title: string;
   onPress?: (event: GestureResponderEvent) => void;
-  variant?: "primary" | "secondary" | "outline";
-  size?: "small" | "medium" | "large";
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   iconSize?: number;
   disabled?: boolean;
   loading?: boolean;
@@ -22,7 +25,16 @@ type ButtonProps = {
   rightIcon?: React.ReactNode;
 };
 
-const sizeStyles = {
+const sizeStyles: Record<
+  ButtonSize,
+  {
+    paddingVertical: number;
+    paddingHorizontal: number;
+    fontSize: number;
+    borderRadius: number;
+    iconSize: number;
+  }
+> = {
   small: {
     paddingVertical: 6,
     paddingHorizontal: 14,
@@ -46,6 +58,52 @@ const sizeStyles = {
   },
 };
 
+// Helper to get button colors based on variant, disabled, and theme
+function getButtonColors({
+  variant,
+  disabled,
+  colors,
+}: {
+  variant: ButtonVariant;
+  disabled: boolean;
+  colors: any;
+}) {
+  if (disabled) {
+    return {
+      backgroundColor: colors.muted,
+      borderColor: colors.muted,
+      textColor: colors.surface,
+    };
+  }
+  switch (variant) {
+    case "secondary":
+      return {
+        backgroundColor: colors.secondary,
+        borderColor: colors.secondary,
+        textColor: colors.surface,
+      };
+    case "outline":
+      return {
+        backgroundColor: "transparent",
+        borderColor: colors.primary,
+        textColor: colors.primary,
+      };
+    case "destructive":
+      return {
+        backgroundColor: colors.error,
+        borderColor: colors.error,
+        textColor: colors.surface,
+      };
+    case "primary":
+    default:
+      return {
+        backgroundColor: colors.primary,
+        borderColor: colors.primary,
+        textColor: colors.surface,
+      };
+  }
+}
+
 export const Button: React.FC<ButtonProps> = ({
   title,
   onPress,
@@ -61,26 +119,11 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   const { colors } = useTheme();
 
-  // Determine colors based on variant
-  let backgroundColor = colors.primary;
-  let borderColor = colors.primary;
-  let textColor = colors.surface;
-
-  if (variant === "secondary") {
-    backgroundColor = colors.secondary;
-    borderColor = colors.secondary;
-    textColor = colors.surface;
-  } else if (variant === "outline") {
-    backgroundColor = "transparent";
-    borderColor = colors.primary;
-    textColor = colors.primary;
-  }
-
-  if (disabled) {
-    backgroundColor = colors.muted;
-    borderColor = colors.muted;
-    textColor = colors.surface;
-  }
+  const { backgroundColor, borderColor, textColor } = getButtonColors({
+    variant,
+    disabled,
+    colors,
+  });
 
   const sizeStyle = sizeStyles[size];
   const resolvedIconSize = iconSize ?? sizeStyle.iconSize;

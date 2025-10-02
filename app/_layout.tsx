@@ -1,10 +1,20 @@
-import { Stack } from "expo-router";
 import { ThemeProvider } from "../src/hooks/useTheme";
+import { NoteProvider } from "@/src/context/note";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Stack } from "expo-router";
 
 export default function AppLayout() {
   return (
-    <ThemeProvider>
-      <Stack screenOptions={{ headerShown: false }} />
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider>
+        <NoteProvider>
+          <Stack
+            screenOptions={{
+              headerShown: false,
+            }}
+          />
+        </NoteProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }

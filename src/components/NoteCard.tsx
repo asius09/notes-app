@@ -3,8 +3,9 @@ import { Muted, P } from "./ui/Typography";
 import { Card, CardHeader, CardContent, CardFooter } from "./ui/Card";
 import { useTheme } from "../hooks/useTheme";
 import { NoteType } from "../types/noteType";
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions, Pressable } from "react-native";
 import { formatDate } from "../utils/formatDate";
+import { useRouter } from "expo-router";
 
 const CARD_GAP = 10;
 const CONTAINER_PADDING = 16 * 2;
@@ -31,6 +32,7 @@ function getCardColor(id: string) {
   return CARD_COLORS[idx];
 }
 
+
 export const NoteCard = ({
   title,
   content,
@@ -39,6 +41,7 @@ export const NoteCard = ({
   id,
 }: NoteType) => {
   const { colors, mode } = useTheme();
+  const router = useRouter();
 
   const cardColor = useMemo(() => getCardColor(id), [id]);
   const backgroundColor = mode === "dark" ? colors.card : cardColor.bg;
@@ -57,25 +60,31 @@ export const NoteCard = ({
     return text.length > 200 ? text.slice(0, 197) + "..." : text;
   };
 
+  const handlePress = () => {
+    router.push(`/note/${id}`);
+  };
+
   return (
-    <Card style={[styles.notesCard, { backgroundColor }]}>
-      <CardHeader title={title} />
-      <CardContent>
-        <P style={{ color: textColor }} size="sm">
-          {truncateText(content)}
-        </P>
-      </CardContent>
-      <CardFooter>
-        <Muted
-          size="xs"
-          style={{ color: textColor, opacity: 0.7 }}
-          numberOfLines={1}
-          ellipsizeMode="tail"
-        >
-          {footerLabel}: {footerDate}
-        </Muted>
-      </CardFooter>
-    </Card>
+    <Pressable onPress={handlePress} style={({ pressed }) => [{ opacity: pressed ? 0.85 : 1 }]}>
+      <Card style={[styles.notesCard, { backgroundColor }]}>
+        <CardHeader title={title} />
+        <CardContent>
+          <P style={{ color: textColor }} size="sm">
+            {truncateText(content)}
+          </P>
+        </CardContent>
+        <CardFooter>
+          <Muted
+            size="xs"
+            style={{ color: textColor, opacity: 0.7 }}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {footerLabel}: {footerDate}
+          </Muted>
+        </CardFooter>
+      </Card>
+    </Pressable>
   );
 };
 

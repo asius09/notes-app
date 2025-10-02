@@ -19,9 +19,13 @@ export const NotesContainer = ({ notes }: NotesContainerProps) => {
   );
 };
 
-export const NoNotes = () => {
+export const NoNotes = ({ message }: { message?: string }) => {
   const { colors } = useTheme();
-  return <H3 style={{ color: colors.muted }}>No notes yet. Create one!</H3>;
+  return (
+    <H3 style={{ color: colors.muted }}>
+      {message || "No notes yet. Create one!"}
+    </H3>
+  );
 };
 
 const styles = StyleSheet.create({
